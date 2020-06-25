@@ -21,7 +21,14 @@
     "@angular/router": "~9.1.4",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "zone.js": "~0.10.2",
+    "moment": "^2.24.0",
+    "keycharm": "0.3.1",
+    "@egjs/hammerjs": "2.0.17",
+    "vis-network": "~7.7.1",
+    "vis-data": "~6.6.1",
+    "vis-uuid": "~1.1.4",
+    "vis-util": "~4.3.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.901.4",
