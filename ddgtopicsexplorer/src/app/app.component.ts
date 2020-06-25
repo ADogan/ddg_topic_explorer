@@ -29,6 +29,20 @@ export class AppComponent implements OnInit {
     this.currentSearch = this.profileForm.controls.firstInput.value;
   }
 
+  togglePhysics(){
+    this.network.setOptions({
+      physics: { enabled: !(this.network['physics'].options.enabled)}
+    });
+  }
+  toggleDragMode(){
+    this.network.setOptions({
+      interaction: {
+        dragNodes: !(this.network['interactionHandler'].options.dragNodes),
+        dragView: !(this.network['interactionHandler'].options.dragView)
+      }
+    });
+  }
+
   setupNetwork() {
 
   const nodes: NetworkNode[] =  [
