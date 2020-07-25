@@ -2,19 +2,17 @@
   <form [formGroup]="profileForm" autocomplete="off"
   (ngSubmit)="saveSearch()" novalidate >
     <div class="form-group">
-      <label for="firstInput">FirstInput</label>
       <input formControlName="firstInput"
       id="firstInput" type="text" class="form-control" placeholder="Search for a topic..." />
       <button type="submit" class="btn btn-primary" >Search</button>
+      -
+      <button (click)="togglePhysics()">Toggle Autofix position</button>
+      <button (click)="toggleDragMode()">Toggle Drag Mode</button>
+      <button (click)="toggleImages()">Toggle Images</button>
     </div>
-
   </form>
 </div>
 
 <div id="result">
-  {{currentSearch}}
-  <button (click)="togglePhysics()">Toggle Autofix position</button>
-  <button (click)="toggleDragMode()">Toggle Drag Mode</button>
   <div id="ddgTopicNetwork"></div>
-
 </div>
