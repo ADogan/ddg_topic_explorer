@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install packages
+      run: npm i
+
+    - name: Build prod project
+      run: ng build --prod
+
+
+#     - name: Deploy to environment
+#       run:
