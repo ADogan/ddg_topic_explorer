@@ -1,9 +1,9 @@
 # Ddgtopicsexplorer
+[![build status](https://github.com/ADogan/ddg_topic_explorer/workflows/CI/badge.svg)](https://github.com/ADogan/ddg_topic_explorer/actions)
 
 Data from the DuckDuckGo API
 Documentation:
 https://duckduckgo.com/api
-
 
 
 
