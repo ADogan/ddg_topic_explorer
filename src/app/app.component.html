@@ -1,21 +1,20 @@
-<div id="toolbar">
-  <form [formGroup]="profileForm" autocomplete="off"
-  (ngSubmit)="saveSearch()" novalidate >
-    <div class="form-group">
-      <input formControlName="firstInput"
-      id="firstInput" type="text" class="form-control" placeholder="Search for a topic..." />
-      <button type="submit" class="btn btn-primary" >Search</button>
-      -
-      <button (click)="togglePhysics()">Toggle Autofix position</button>
-      <button (click)="toggleDragMode()">Toggle Drag Mode</button>
-      <button (click)="toggleImages()">Toggle Images</button>
+
+<div id="ddgTopicNetwork"></div>
+
+  <div id="toolbar">
+    <form [formGroup]="profileForm" autocomplete="off"
+    (ngSubmit)="saveSearch()" novalidate >
+      <div class="form-group">
+        <input formControlName="firstInput"
+        id="firstInput" type="text" class="form-control" placeholder="Search for a topic..." />
+        <button type="submit" class="btn btn-primary" >Search</button>
+        -
+        <button (click)="togglePhysics()">Toggle Autofix position</button>
+        <button (click)="toggleDragMode()">Toggle Drag Mode</button>
+        <button (click)="toggleImages()">Toggle Images</button>
 
         {{ searchingStatus? ' - ' + searchingStatus: '' }}
         {{ drawingStatus? ' - ' + drawingStatus: '' }}
-    </div>
-  </form>
-</div>
-
-<div id="result">
-  <div id="ddgTopicNetwork"></div>
-</div>
+      </div>
+    </form>
+  </div>
