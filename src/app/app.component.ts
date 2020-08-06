@@ -19,6 +19,8 @@ export class AppComponent implements OnInit {
   profileForm: FormGroup;
   currentSearch: string;
   latestData: NetworkData;
+  searchingStatus: string;
+  drawingStatus: string;
   latestDDGTopicsResponse: DDGTopicsResponse;
   network: Network;
 
@@ -33,14 +35,33 @@ export class AppComponent implements OnInit {
     this.network = new Network(document.getElementById('ddgTopicNetwork'),
                               this.generateEmptyData(),
                               this.generateBaseOptions());
+
+    this.network.on('initRedraw', () => {
+      this.drawingStatus = 'Performing Redraw of Graph';
+      console.log('initRedraw');
+    });
+    this.network.on('beforeDrawing', () => {
+      this.drawingStatus = 'Drawing Network Graph';
+      console.log('beforeDrawing');
+    });
+    this.network.on('afterDrawing', () => {
+      this.drawingStatus = '';
+      console.log('afterDrawing');
+    });
   }
 
   saveSearch() {
+    this.searchingStatus = 'searching';
     this.currentSearch = this.profileForm.controls.firstInput.value;
     const serviceResult = this.ddgtopicsService.getTopicSummary(this.currentSearch);
     serviceResult.subscribe(res => {
-      this.network.setData(this.generateNodesAndEdgesForData(res));
-      this.network.deleteSelected();
+      if (res){
+        this.network.setData(this.generateNodesAndEdgesForData(res));
+        // this.network.deleteSelected();
+      } else {
+        console.error('result is empty');
+        this.searchingStatus = 'Service error';
+      }
     });
   }
 
@@ -62,11 +83,21 @@ export class AppComponent implements OnInit {
   }
 
   generateNodesAndEdgesForData(response: DDGTopicsResponse ) {
+
     const newNodes: NetworkNode[] = [];
     const newEdges: Edge[] = [];
 
     const baseNodeIndex = 1;
     let nodeIndex = baseNodeIndex.valueOf();
+
+    if (response instanceof Array && response.length === 0){
+      console.error('No or incorrect response found:');
+      console.error(response);
+
+      this.searchingStatus = 'Result error';
+      return;
+    }
+
 
     const MainEntry: DDGTopic = {
       Result: undefined,
@@ -78,28 +109,33 @@ export class AppComponent implements OnInit {
     newNodes.push(this.generateBasicNodeObjectFromEntry(nodeIndex, MainEntry));
     newEdges.push(this.getEdge(baseNodeIndex, nodeIndex));
     nodeIndex++;
+    if (response.RelatedTopics){
+      response.RelatedTopics?.forEach( entry => {
+        newNodes.push(this.generateBasicNodeObjectFromEntry(nodeIndex, entry));
+        newEdges.push(this.getEdge(baseNodeIndex, nodeIndex));
 
-    response.RelatedTopics.forEach( entry => {
-      newNodes.push(this.generateBasicNodeObjectFromEntry(nodeIndex, entry));
-      newEdges.push(this.getEdge(baseNodeIndex, nodeIndex));
+        if (entry.Topics) {
 
-      if (entry.Topics) {
-
-        const subTopicBaseIndex = nodeIndex;
-        nodeIndex++;
-
-        entry.Topics.forEach( (topic: DDGTopic) => {
-          newNodes.push(this.generateBasicNodeObjectFromEntry(nodeIndex, topic));
-          newEdges.push(this.getEdge(subTopicBaseIndex, nodeIndex));
+          const subTopicBaseIndex = nodeIndex;
           nodeIndex++;
-        });
-      } else {
-        nodeIndex++;
 
-      }
-    });
+          entry.Topics.forEach( (topic: DDGTopic) => {
+            newNodes.push(this.generateBasicNodeObjectFromEntry(nodeIndex, topic));
+            newEdges.push(this.getEdge(subTopicBaseIndex, nodeIndex));
+            nodeIndex++;
+          });
+        } else {
+          nodeIndex++;
+
+        }
+      });
+    } else {
+      console.log('no related topics found.');
+    }
 
     const newData: NetworkData = {  nodes: newNodes, edges: newEdges };
+
+    this.searchingStatus = 'Result loaded';
     return newData;
   }
 

@@ -9,6 +9,9 @@
       <button (click)="togglePhysics()">Toggle Autofix position</button>
       <button (click)="toggleDragMode()">Toggle Drag Mode</button>
       <button (click)="toggleImages()">Toggle Images</button>
+
+        {{ searchingStatus? ' - ' + searchingStatus: '' }}
+        {{ drawingStatus? ' - ' + drawingStatus: '' }}
     </div>
   </form>
 </div>
